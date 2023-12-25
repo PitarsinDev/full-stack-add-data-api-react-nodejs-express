@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API data entry form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+
+  <div class="p-10">
+  <h1 class="text-center text-4xl pb-10">API data entry form</h1>
+
+  <div class="flex justify-center">
+  <form id="dataForm" onsubmit="return saveData()">
+    <div class="grid grid-cols-4">
+    <div class="mx-5">
+    <label for="name" class="text-center mr-2">Column 1</label>
+    <input class="border rounded-lg" type="text" id="name" name="name" required>
+    </div>
+    <div class="mx-5">
+    <label for="email" class="text-center mr-2">Column 2</label>
+    <input class="border rounded-lg" type="email" id="email" name="email" required>
+    </div>
+    <div class="mx-5">
+    <label for="additional1" class="text-center mr-2">Column 3</label>
+    <input class="border rounded-lg" type="text" id="additional1" name="additional1" required>
+    </div>
+    <div class="mx-5">
+    <label for="additional2" class="text-center mr-2">Column 4</label>
+    <input class="border rounded-lg" type="text" id="additional2" name="additional2" required>
+    </div>
+    </div>
+    <div class="flex justify-center mt-10">
+      <button type="button" onclick="saveData()" class="border rounded-lg border-black px-5 py-2 hover:text-white hover:bg-black transition">Save API</button>
+    </div>
+  </form>
+</div>
+<div class="flex justify-center mt-20">
+  <div class="w-10/12">
+    <hr>
+  </div>
+</div>
+</div>
+  
+
+  <script>
+    async function saveData() {
+      const column1 = document.getElementById('name').value;
+      const column2 = document.getElementById('email').value;
+      const column3 = document.getElementById('additional1').value;
+      const column4 = document.getElementById('additional2').value;
+  
+      try {
+        const response = await fetch('http://localhost:3000/saveData', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ column1, column2, column3, column4 }),
+        });
+  
+        const result = await response.text();
+        alert(result);
+  
+        // รีเซ็ตค่าฟอร์มหลังจากที่ข้อมูลถูกส่ง
+        document.getElementById('name').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('additional1').value = '';
+        document.getElementById('additional2').value = '';
+  
+      } catch (error) {
+        console.error('Error saving data:', error);
+      }
+  
+      // คืนค่า false เพื่อป้องกันการส่ง form ไปยังหน้าอื่น
+      return false;
+    }
+  </script>
+  
+  
+
+</body>
+</html>
